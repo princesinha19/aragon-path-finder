@@ -5,15 +5,18 @@ import {
     Card,
     Col,
     Form,
-    Modal,
-    CardDeck,
 } from "react-bootstrap";
 
 import { ethers } from 'ethers';
 import { connect } from '@aragon/connect-react';
+import DisplayPath from "./DisplayPath";
+import AlertModal from "./AlertModal";
 
 export default function TxPath() {
-    const [errorModal, setErrorModal] = useState({ msg: "", open: false });
+    const [errorModal, setErrorModal] = useState({
+        msg: "",
+        open: false
+    });
     const [details, setDetails] = useState({
         ensAddress: "multipaths.aragonid.eth",
         accountAddress: "0xc07866c1c58824934b0f17090765a372a1933655",
@@ -23,6 +26,11 @@ export default function TxPath() {
     const [txPaths, setTxPaths] = useState([]);
     const [isProcessing, setIsProcessing] = useState(false);
     const [isRinkeby, setIsRinkeby] = useState(true);
+    const [showTx, setShowTx] = useState({
+        all: true,
+        shortest: false,
+        longest: false,
+    });
 
     const txPathHandler = async () => {
         try {
@@ -192,7 +200,7 @@ export default function TxPath() {
 
             <Card className="mx-auto path-card">
                 <Card.Header style={{ fontSize: "1.5rem" }}>
-                    Transaction Paths
+                    Transaction Path
                 </Card.Header>
 
                 <Card.Body>
@@ -202,28 +210,82 @@ export default function TxPath() {
                         </div>
                         :
                         <div>
-                            {txPaths.map((element, key) => (
+                            {txPaths.length > 0 ?
                                 <div>
-                                    <p style={{ fontSize: "1.5rem" }}><u>Path {key}</u></p>
-                                    <CardDeck key={key} style={{ paddingBottom: "2%" }}>
-                                        {element.transactions.map((tx, k) => (
-                                            <>
-                                                <Card key={k}>
-                                                    <Card.Header>{k + 1}</Card.Header>
-                                                    <Card.Body>
-                                                        <p style={{ fontWeight: "bold" }}>{tx.to}</p>
-                                                        {tx.description}
-                                                    </Card.Body>
-                                                </Card>
-                                                {k !== element.transactions.length - 1
-                                                    ? <span className="right-arrow">&#8594;</span>
-                                                    : null
-                                                }
-                                            </>
-                                        ))}
-                                    </CardDeck>
+                                    <div style={{ textAlign: "right", marginBottom: "1%" }} key={`tx-radio`}>
+                                        <span style={{ fontSize: "1.1rem" }}>Show Path: </span>
+                                        <Form.Check
+                                            inline
+                                            label="All"
+                                            type="radio"
+                                            id={`inline-radio-3`}
+                                            checked={showTx.all}
+                                            onChange={() => {
+                                                setShowTx({
+                                                    ...showTx,
+                                                    all: true,
+                                                    shortest: false,
+                                                    longest: false,
+                                                });
+                                            }}
+                                        />
+                                        <Form.Check
+                                            inline
+                                            label="Shortest"
+                                            type="radio"
+                                            id={`inline-radio-4`}
+                                            checked={showTx.shortest}
+                                            onChange={() => {
+                                                setShowTx({
+                                                    ...showTx,
+                                                    all: false,
+                                                    shortest: true,
+                                                    longest: false,
+                                                });
+                                            }}
+                                        />
+                                        <Form.Check
+                                            inline
+                                            label="Longest"
+                                            type="radio"
+                                            id={`inline-radio-5`}
+                                            checked={showTx.longest}
+                                            onChange={() => {
+                                                setShowTx({
+                                                    ...showTx,
+                                                    all: false,
+                                                    shortest: false,
+                                                    longest: true,
+                                                });
+                                            }}
+                                        />
+                                    </div>
+
+                                    {showTx.all ?
+                                        <DisplayPath
+                                            txPaths={txPaths}
+                                            networkId={isRinkeby ? 4 : 1}
+                                            account={details.accountAddress}
+                                        />
+                                        : (
+                                            showTx.shortest
+                                                ?
+                                                <DisplayPath
+                                                    txPaths={[txPaths[0]]}
+                                                    networkId={isRinkeby ? 4 : 1}
+                                                    account={details.accountAddress}
+                                                />
+                                                :
+                                                <DisplayPath
+                                                    txPaths={[txPaths[txPaths.length - 1]]}
+                                                    networkId={isRinkeby ? 4 : 1}
+                                                    account={details.accountAddress}
+                                                />
+                                        )
+                                    }
                                 </div>
-                            ))}
+                                : null
+                            }
                         </div>
                     }
 
@@ -239,23 +301,12 @@ export default function TxPath() {
                 </Card.Footer>
             </Card>
 
-            <Modal
-                show={errorModal.open}
-                onHide={() => setErrorModal({ ...errorModal, open: false })}
-                animation={false}
+            <AlertModal
+                open={errorModal.open}
+                toggle={() => setErrorModal({ ...errorModal, open: false })}
             >
-                <Modal.Header closeButton>
-                    <Modal.Title>Opps!! Error...</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>{errorModal.msg}</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="danger"
-                        onClick={() => setErrorModal({ ...errorModal, open: false })}
-                    >
-                        Ok
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+                {errorModal.msg}
+            </AlertModal>
         </div >
     );
 }

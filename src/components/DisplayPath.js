@@ -6,6 +6,7 @@ import {
     Button,
 } from "react-bootstrap";
 import AlertModal from "./AlertModal";
+import SuccessModal from "./SuccessModal";
 
 export default function DisplayPath({
     txPaths,
@@ -17,26 +18,34 @@ export default function DisplayPath({
         open: false
     });
 
+    const [successModal, setSuccessModal] = useState({
+        msg: "",
+        open: false
+    });
+
     const sendTxRequest = async (key, provider, signer) => {
         const choosedPath = txPaths[key];
 
-        for (let i = 0; i < choosedPath.transactions.length; i++) {
-            try {
-                const tx = await signer.sendTransaction
-                    ({
-                        from: choosedPath.transactions[i].from,
-                        to: choosedPath.transactions[i].to,
-                        data: choosedPath.transactions[i].data,
-                    });
-
-                await provider.waitForTransaction(tx.hash);
-
-            } catch (error) {
-                setErrorModal({
-                    open: true,
-                    msg: error.message,
+        try {
+            const tx = await signer.sendTransaction
+                ({
+                    from: choosedPath.transactions[0].from,
+                    to: choosedPath.transactions[0].to,
+                    data: choosedPath.transactions[0].data,
                 });
-            }
+
+            await provider.waitForTransaction(tx.hash);
+
+            setSuccessModal({
+                open: true,
+                msg: "Congratulations !! " +
+                    "Your transaction request succesfully completed !!",
+            });
+        } catch (error) {
+            setErrorModal({
+                open: true,
+                msg: error.message,
+            });
         }
     };
 
@@ -109,6 +118,13 @@ export default function DisplayPath({
             >
                 {errorModal.msg}
             </AlertModal>
+
+            <SuccessModal
+                open={successModal.open}
+                toggle={() => setSuccessModal({ ...successModal, open: false })}
+            >
+                {successModal.msg}
+            </SuccessModal>
         </div>
     );
 }

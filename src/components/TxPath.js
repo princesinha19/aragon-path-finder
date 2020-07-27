@@ -18,10 +18,10 @@ export default function TxPath() {
         open: false
     });
     const [details, setDetails] = useState({
-        ensAddress: "multipaths.aragonid.eth",
-        accountAddress: "0xc07866c1c58824934b0f17090765a372a1933655",
-        amount: "1",
-        message: "Multiple Path Test Payment",
+        ensAddress: "",
+        accountAddress: "",
+        amount: "",
+        message: "",
     });
     const [txPaths, setTxPaths] = useState([]);
     const [isProcessing, setIsProcessing] = useState(false);

@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/princesinha19/aragon-path-finder/static/css/main.1893ffc1.chunk.css",
+    "main.js": "/princesinha19/aragon-path-finder/static/js/main.29f9b2dd.chunk.js",
+    "main.js.map": "/princesinha19/aragon-path-finder/static/js/main.29f9b2dd.chunk.js.map",
+    "runtime-main.js": "/princesinha19/aragon-path-finder/static/js/runtime-main.5376c644.js",
+    "runtime-main.js.map": "/princesinha19/aragon-path-finder/static/js/runtime-main.5376c644.js.map",
+    "static/css/2.829c9cb5.chunk.css": "/princesinha19/aragon-path-finder/static/css/2.829c9cb5.chunk.css",
+    "static/js/2.9699606f.chunk.js": "/princesinha19/aragon-path-finder/static/js/2.9699606f.chunk.js",
+    "static/js/2.9699606f.chunk.js.map": "/princesinha19/aragon-path-finder/static/js/2.9699606f.chunk.js.map",
+    "index.html": "/princesinha19/aragon-path-finder/index.html",
+    "precache-manifest.a94d7abb7e90329bc6241a7ad180a0b4.js": "/princesinha19/aragon-path-finder/precache-manifest.a94d7abb7e90329bc6241a7ad180a0b4.js",
+    "service-worker.js": "/princesinha19/aragon-path-finder/service-worker.js",
+    "static/css/2.829c9cb5.chunk.css.map": "/princesinha19/aragon-path-finder/static/css/2.829c9cb5.chunk.css.map",
+    "static/css/main.1893ffc1.chunk.css.map": "/princesinha19/aragon-path-finder/static/css/main.1893ffc1.chunk.css.map",
+    "static/js/2.9699606f.chunk.js.LICENSE.txt": "/princesinha19/aragon-path-finder/static/js/2.9699606f.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5376c644.js",
+    "static/css/2.829c9cb5.chunk.css",
+    "static/js/2.9699606f.chunk.js",
+    "static/css/main.1893ffc1.chunk.css",
+    "static/js/main.29f9b2dd.chunk.js"
+  ]
+}
